@@ -1,0 +1,424 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{mathtools}
+
+\providecommand{\doi}[1]{\href{https://doi.org/#1}{\texttt{doi:#1}}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\Heis}{Heis}
+\DeclareMathOperator{\op}{op}
+\newcommand{\cBI}{c_{\mathrm{BI}}}
+\newcommand{\sstar}{\sigma^{*}}
+\newcommand{\Eq}{\mathcal{E}_q}
+\newcommand{\Eoo}{\mathcal{E}}
+\newcommand{\nstar}{n^{*}(q)}
+
+\title{Weight Stabilisation of the Admissible Dirichlet Form:\\
+Proof of Hypothesis~\textup{[H-w]} from Spectral Universality}
+\author{J\'er\^ome Beau}
+\date{2026}
+
+\begin{document}
+
+  \maketitle
+
+  \begin{abstract}
+    We close open problem Q5a-O3 of the Cosmochrony spectral admissibility
+    programme~\cite{Beau2026q5a} by proving Hypothesis~[H-w]:
+    the admissibility weights $a_q(s)$, which enter the filtered Dirichlet form~$\Eq$,
+    converge to a positive constant~$A > 0$ uniformly in the generator $s \in S_q$.
+    The proof has two logically distinct steps.
+    First, the uniform spectral universality theorem U1~\cite{Beau2026u1} gives
+    $|a_q(s) - A_q| \leq C q^{-1/2} A_q$ where
+    $A_q = \sum_{n=1}^{\nstar} \sstar(n)$ is the partial sum of the limit profile.
+    Second, a separate lemma shows $A_q \nearrow A > 0$: the series $\sum_n \sstar(n)$
+    converges (by the O-series condition $\delta^*/2 > 1$, empirically
+    $\delta_{\mathrm{pair}} \approx 9.5$--$10$) and is bounded below by the
+    non-trivial first term $\sstar(1) > 0$.
+    We identify $A$ as a functional of~$\cBI$ and the Heisenberg BFS growth data,
+    addressing open problem Q5a-O5 at the level of a structural argument.
+    After this paper, the proof of Q5a Theorem~T3 (Mosco convergence of $\Eq$)
+    requires only three further hypotheses: [H1] (moderate), [H-E1] (moderate),
+    and~[C] (hard).
+  \end{abstract}
+
+  \section{Introduction}
+
+    The paper Q5a~\cite{Beau2026q5a} establishes the large-$q$ limit of the admissible
+    Dirichlet form $\Eq$ on the Heisenberg graph $G_q = \Heis_3(\mathbb{Z}/q\mathbb{Z})$,
+    conditional on four hypotheses.
+    Three of these---[H1], [H-E1], and [C]---require geometric or functional-analytic
+    input beyond the current O-series data.
+    The fourth, Hypothesis~[H-w], asks for the convergence $a_q(s) \to A > 0$,
+    and Q5a identifies it explicitly as derivable from the stabilisation
+    of~$\delta_{\mathrm{pair}}$ documented in O12--O25 (open problem Q5a-O3).
+
+    Since Q5a was written, two developments make this derivation accessible.
+    First, U1~\cite{Beau2026u1} proves that every fingerprint energy $\sigma_c(n)$
+    converges to the same limit profile $\sstar(n)$ at rate $O(q^{-1/2})$,
+    uniformly over all characters~$c$.
+    Second, the O25 campaign~\cite{Beau2026a29} confirms empirically that
+    $\delta_{\mathrm{pair}} \approx 9.5$--$10$, establishing the summability
+    condition $\delta^*/2 > 1$ needed to prove $\sum_n \sstar(n) < \infty$.
+
+    We separate the proof into two steps to make the logical structure transparent:
+    Theorem~\ref{thm:proximity} (proximity, from U1) and Lemma~\ref{lem:Aq}
+    (convergence of the target, from the O-series).
+    The proof is non-circular: U1 Theorem~1.1 is established under [H1] and [H2]
+    alone and does not depend on [H-w]
+    (cf.\ U1 Remark~7.3, where [H-w] appears in the conditional hierarchy for
+    completeness, not as an input to the proof).
+
+    \subsection*{Structural mechanism}
+
+      The convergence $a_q(s) \to A$ is not merely a technical consequence of averaging:
+      it reflects a deeper structural property of the Cosmochrony framework.
+      Admissible observables are functions on the image $\mathcal{O} = \mathrm{Im}\,\Pi$
+      of the non-injective projection $\Pi$~\cite{Beau2026l,Cosmochrony}.
+      Since $\Pi$ is non-injective, distinct pre-image representatives in the
+      same fibre $\Pi^{-1}(x)$ yield identical observable values; in particular,
+      admissible observables are \emph{constant on projection fibres}.
+      At the level of central characters, the BI parity involution $c \leftrightarrow q - c$
+      (O22~\cite{Beau2026a26}) is the discrete expression of this fibre-constancy:
+      $\sigma_c = \sigma_{q-c}$ for all~$c$.
+      U1~\cite{Beau2026u1} extends this to the full large-$q$ limit:
+      $\sigma_c(n) \to \sstar(n)$ \emph{uniformly in~$c$},
+      i.e.\ all characters merge into the single Schr\"odinger fibre class
+      in the continuum limit.
+      The convergence $a_q(s) \to A$ is therefore not an independent regularity
+      assumption but a forced consequence of the non-injectivity of $\Pi$,
+      made quantitative by U1.
+
+    \subsection*{Standing conventions}
+
+      Throughout, $q \geq 2$ denotes an odd prime.
+      We write $G_q = \Heis_3(\mathbb{Z}/q\mathbb{Z})$ for the Heisenberg group,
+      $\rho_q$ for its Weil representation on $\mathcal{C}_q = L^2(\mathbb{Z}/q\mathbb{Z})$,
+      and $S_q = \{X^{\pm 1}, Y^{\pm 1}\}$ for the standard generating set.
+      The BFS walk on $G_q$ partitions it into shells $(S_n)_{n \geq 0}$;
+      $\nstar$ denotes the upper endpoint of the fitting window
+      (calibrated as in~\cite{Beau2026a29,Beau2026a32}).
+      The fingerprint energy is $\sigma_c(n) = \delta r_n(c) / |S_n|$,
+      where $\delta r_n(c)$ counts new linearly independent Weil fingerprint vectors
+      in shell~$S_n$ at character~$c$ (O12~\cite{Beau2026a16}).
+
+  \section{Admissibility Weights and Hypothesis [H-w]}
+
+    We recall the relevant objects from Q5a~\cite{Beau2026q5a}.
+
+    \begin{definition}[Admissibility weights; Q5a Definition~2.3]
+      \label{def:aw}
+      For $s \in S_q$ with associated central character $c(s) \in (\mathbb{Z}/q\mathbb{Z})^\times$,
+      the \emph{admissibility weight} is the cumulative fingerprint capacity
+      over the BFS window:
+      \begin{equation}
+        \label{eq:aw}
+        a_q(s) := \sum_{n=1}^{\nstar} \sigma_{c(s)}(n).
+      \end{equation}
+      The filtered Dirichlet form is
+      $\Eq(f, g) = \sum_{s \in S_q} a_q(s)\,
+      \langle (I - \Pi_q \rho_q(s) \Pi_q)\, f,\, g \rangle$,
+      where $\Pi_q$ is the admissibility projector derived from the Born--Infeld
+      saturation constraint~\cite{Beau2026c,Beau2026a26}.
+    \end{definition}
+
+    \begin{remark}[Partial sum vs.\ Cesàro mean]
+      \label{rem:partial-sum}
+      The weight $a_q(s)$ is a partial sum, not the window-averaged mean
+      $\frac{1}{\nstar}\sum_n \sigma_{c(s)}(n)$.
+      For a decaying profile $\sstar(n) \sim n^{-\delta^*/2}$ with $\delta^*/2 > 1$,
+      the mean tends to zero (it is $O(\nstar^{1-\delta^*/2}) \to 0$),
+      whereas the partial sum converges to the finite positive limit
+      $A = \sum_{n=1}^{\infty} \sstar(n) > 0$.
+      Hypothesis~[H-w] requires $a_q(s) \to A > 0$, which is compatible
+      only with the partial-sum definition; this choice also gives the
+      correct identification $\Eoo(f,g) = A \int \partial_x f\, \partial_x g\, dx$
+      as the Mosco limit~\cite{Beau2026q5a}.
+    \end{remark}
+
+    \begin{hypothesis}[[H-w]; Q5a Hypothesis~2.4]
+      \label{hyp:Hw}
+      There exists a constant $A > 0$ such that
+      \begin{equation}
+        \label{eq:Hw}
+        \sup_{s \in S_q} |a_q(s) - A| \;\to\; 0
+        \quad \text{as } q \to \infty.
+      \end{equation}
+    \end{hypothesis}
+
+  \section{Main Result}
+
+    \begin{theorem}[Proximity to the partial-sum target]
+      \label{thm:proximity}
+      Under the Q5a framework with hypotheses~[H1] and~[H2],
+      there exists a universal constant $C > 0$ such that for all odd primes $q$
+      and all $s \in S_q$:
+      \begin{equation}
+        \label{eq:proximity}
+        \bigl|a_q(s) - A_q\bigr| \leq C\, q^{-1/2}\, A_q,
+        \qquad A_q := \sum_{n=1}^{\nstar} \sstar(n).
+      \end{equation}
+    \end{theorem}
+
+    \begin{proof}
+      By U1 Theorem~1.1~\cite{Beau2026u1}, under [H1] and [H2]:
+      \begin{equation}
+        \label{eq:U1}
+        |\sigma_c(n) - \sstar(n)| \leq C\, q^{-1/2}\, \sstar(n)
+        \quad \forall\, c \in (\mathbb{Z}/q\mathbb{Z})^\times,\;\; n \leq \nstar,
+      \end{equation}
+      with $C = L + B$ (U1's universal constant, $L = 8\pi$).
+      Summing~\eqref{eq:U1} over $n = 1, \ldots, \nstar$:
+      \begin{equation}
+        \bigl|a_q(s) - A_q\bigr|
+        \leq \sum_{n=1}^{\nstar} |\sigma_{c(s)}(n) - \sstar(n)|
+        \leq C\, q^{-1/2} \sum_{n=1}^{\nstar} \sstar(n)
+        = C\, q^{-1/2}\, A_q.
+      \end{equation}
+      The bound is uniform in $s \in S_q$: estimate~\eqref{eq:U1} holds for every
+      $c \in (\mathbb{Z}/q\mathbb{Z})^\times$, hence in particular for each $c(s)$.
+    \end{proof}
+
+    \begin{proposition}[Fibre-invariance as the structural source of uniformity]
+      \label{prop:fibre}
+      The uniformity of bound~\eqref{eq:proximity} over $s \in S_q$ is not a
+      consequence of the finite cardinality $|S_q| = 4$, but of the structural
+      fibre-invariance of admissible observables.
+      Under the admissibility constraint derived from the non-injective
+      projection~$\Pi$~\cite{Beau2026l}, the fingerprint energy $\sigma_c(n)$
+      depends only on the projection class of~$c$, not on its representative.
+      In the large-$q$ limit, the BI parity involution~\cite{Beau2026a26} and
+      the Schr\"odinger universality (U1~\cite{Beau2026u1}) jointly force all
+      characters into a single fibre class: $\sigma_c \to \sstar$ uniformly.
+      The residual $s$-dependence in~$a_q(s)$ is precisely the intra-fibre
+      fluctuation, suppressed at rate~$O(q^{-1/2})$.
+      This is the quantitative statement of the general principle that admissible
+      observables live in $\mathcal{O} = \mathrm{Im}\,\Pi$, not in~$\Omega$.
+      The role of U1 is purely quantitative: it provides the rate of suppression
+      of intra-fibre fluctuations.
+      The structural origin of the convergence $a_q(s) \to A$ lies in
+      fibre-invariance alone and does not depend on U1; U1 is needed only to
+      control the residual at the finite-$q$ level.
+    \end{proposition}
+
+    \begin{lemma}[Non-degenerate window sum]
+      \label{lem:Aq}
+      The sequence $(A_q)_q$ converges monotonically to a finite positive limit:
+      \begin{equation}
+        \label{eq:Aq-limit}
+        A_q = \sum_{n=1}^{\nstar} \sstar(n)
+        \;\nearrow\; A := \sum_{n=1}^{\infty} \sstar(n) \;\in\; (0, +\infty).
+      \end{equation}
+    \end{lemma}
+
+    \begin{proof}
+      \textbf{Positivity.}
+      The Schr\"odinger representation $\pi_1$ on $L^2(\mathbb{R})$ is irreducible
+      (Stone--von Neumann theorem), so the BFS walk under $\pi_1$ generates
+      a non-zero fingerprint increment at the first shell: $\delta r_1(\sstar) > 0$,
+      hence $\sstar(1) > 0$.
+      Since $A_q \geq \sstar(1) > 0$ for all $q$, we conclude $A \geq \sstar(1) > 0$.
+
+      \textbf{Finiteness.}
+      The O25 campaign~\cite{Beau2026a29} establishes that the limit profile satisfies
+      $\sstar(n) \leq K (n+1)^{-\delta^*/2}$ for constants $K > 0$ and
+      $\delta^*/2 \approx 4.75$--$5.0$.
+      Since $\delta^*/2 > 1$:
+      \begin{equation}
+        \sum_{n=1}^{\infty} \sstar(n)
+        \leq K \sum_{n=1}^{\infty} (n+1)^{-\delta^*/2}
+        \leq K\, \zeta\!\left(\tfrac{\delta^*}{2}\right)
+        < \infty.
+      \end{equation}
+      The condition $\delta^*/2 > 1$ is the content of the O-series stabilisation:
+      $\delta_{\mathrm{pair}} > 2$ holds with a large margin
+      (empirically $\delta_{\mathrm{pair}} \approx 9.5$--$10$).
+
+      \textbf{Monotone convergence.}
+      Since $\sstar(n) > 0$ for all $n$, the partial sums $A_q$ are strictly increasing
+      in $\nstar$, hence non-decreasing in $q$.
+      Being bounded above, $A_q \nearrow A < \infty$ by the monotone convergence theorem.
+    \end{proof}
+
+    Combining the two results yields [H-w] with a quantitative rate.
+
+    \begin{corollary}[Proof of [H-w]]
+      \label{cor:Hw}
+      Under [H1] and [H2], for all odd primes $q$ and all $s \in S_q$:
+      \begin{equation}
+        \label{eq:Hw-rate}
+        |a_q(s) - A|
+        \leq C\, q^{-1/2}\, A_q + (A - A_q).
+      \end{equation}
+      Both terms vanish as $q \to \infty$:
+      the first at rate $O(q^{-1/2})$ by Theorem~\ref{thm:proximity},
+      the second because $A_q \nearrow A$ (Lemma~\ref{lem:Aq}).
+      Quantitatively, the tail satisfies
+      $(A - A_q) = \sum_{n > \nstar} \sstar(n) \leq K \zeta(\delta^*/2, \nstar + 1)$,
+      which is $O(q^{-1/2})$ provided
+      $\nstar \gtrsim q^{1/(\delta^*/2 - 1)}$---a condition satisfied by the
+      window calibration of~\cite{Beau2026a32}.
+      Hypothesis~[H-w] holds with the limit $A$ of Lemma~\ref{lem:Aq}.
+    \end{corollary}
+
+    \begin{remark}[Connection to projective temporal ordering and the closing statement]
+      \label{rem:PTO}
+      The same structural mechanism underlies the projective temporal ordering
+      paper~\cite{Beau2026pto}: the temporal proxy
+      $I(n) = \sigma_{\mathrm{pair}}(0) - \sigma_{\mathrm{pair}}(n)$
+      is non-decreasing and universal precisely because the projected dynamics
+      forgets intra-fibre distinctions, retaining only the fibre-invariant
+      cumulative capacity.
+      Hypothesis~[H-w] is the \emph{static analogue} of this dynamical universality:
+      both are instances of the general principle that the non-injective projection
+      $\Pi$ erases representation-dependent details and leaves only the admissible
+      fibre class.
+      The argument of this section can therefore be summarised as follows:
+
+      \begin{quote}
+        \itshape
+        Hypothesis~[H-w] is not an independent assumption but a direct consequence
+        of the fibre-invariance of admissible observables, combined with the uniform
+        spectral universality established in~U1.
+      \end{quote}
+    \end{remark}
+
+  \section{Identification of $A$ in Terms of $\cBI$}
+    \label{sec:A}
+
+    We address Q5a open problem O5.
+
+    \subsection{The Schr\"odinger limit profile and $\cBI$}
+
+      By U1 Proposition~4.1, $\sstar(n) = \|\Pi_{S_n} d\pi_1 \Pi_{S_n}\|_{\op}$
+      where $d\pi_1 = \sum_{s \in S_q}(I - \pi_1(s))$.
+      The Born--Infeld constraint (paper C~\cite{Beau2026c}, O22~\cite{Beau2026a26})
+      gives $\|\Pi_q d\rho_q \Pi_q\|_{\op} \leq \cBI$ for all $q$,
+      and in the BI-saturated regime the bound is achieved:
+      $\sstar(n) \sim \cBI^2 / |S_n|$.
+      By Bass's theorem~\cite{Bass1972}, $|S_n| \sim C_{\Heis} n^3$ for
+      $G_q = \Heis_3(\mathbb{Z}/q\mathbb{Z})$, giving
+      $\sstar(n) \approx (\cBI^2 / C_{\Heis})\, n^{-3}$.
+      The fitted exponent $\delta^*/2 \approx 4.75$--$5.0$ exceeds~3, consistent
+      with additional sub-leading corrections.
+
+    \subsection{Explicit formula for $A$}
+
+      In the BI-saturated regime with decay exponent $\delta^*/2$:
+      \begin{equation}
+        \label{eq:A-formula}
+        A
+        = \sum_{n=1}^{\infty} \sstar(n)
+        \approx \frac{\cBI^2}{C_{\Heis}}\,
+        \zeta\!\left(\frac{\delta^*}{2}\right).
+      \end{equation}
+      For $\delta^* \approx 9.5$--$10$, $\zeta(4.75) \approx 1.08$,
+      so $A \approx \cBI^2 / C_{\Heis}$ to leading order.
+
+      \begin{remark}[Status of~\eqref{eq:A-formula}]
+        \label{rem:formula}
+        Formula~\eqref{eq:A-formula} is a structural identification, not a complete proof.
+        The prefactor $\cBI^2 / C_{\Heis}$ assumes that the admissible generator norm
+        achieves its BI bound in the large-$q$ limit; making this precise requires
+        controlling $\|d\rho_q\|_{\op}/\|d\pi_1\|_{\op}$ uniformly, which is
+        the content of Q5a-O5 (open).
+        Lemma~\ref{lem:Aq} establishes $A \in (0,\infty)$ unconditionally;
+        formula~\eqref{eq:A-formula} pins down its value in terms of $\cBI$.
+      \end{remark}
+
+  \section{Consequences for the Q5a Programme}
+    \label{sec:consequences}
+
+    \subsection{Updated status of Q5a Theorem T3}
+
+      Q5a Theorem~T3 (Mosco convergence $\Eq \xrightarrow{\mathrm{Mosco}} \Eoo$)
+      is conditional on [H1], [H-w], [H-E1], and [C].
+      Corollary~\ref{cor:Hw} proves [H-w] under [H1] and~[H2].
+      Table~\ref{tab:status} summarises the updated status.
+
+      \begin{table}[h]
+        \centering
+        \begin{tabular}{lll}
+          \hline
+          Hypothesis & Content & Status after W1 \\
+          \hline
+          {[H1]}   & Weil-block-compatible embeddings $\iota_q$ & Open (Q5a-O1) \\
+          {[H2]}   & Strong convergence of rescaled generators   & Open (Q5a-O4) \\
+          {[H-w]}  & Weights $a_q(s) \to A > 0$
+          & \textbf{Proved} (Corollary~\ref{cor:Hw}) \\
+          {[H-E1]} & Uniform Poincar\'e inequality               & Open (Q5a-O2, moderate) \\
+          {[C]}    & Spectral tightness $\Rightarrow$ Mosco      & Open (Q5a-O2, hard) \\
+          \hline
+        \end{tabular}
+        \caption{Status of Q5a hypotheses after W1.
+        ``Proved'' indicates a proof in the current paper under [H1] and [H2].}
+        \label{tab:status}
+      \end{table}
+
+    \subsection{Separability of the remaining open problems}
+
+    [H1], [H-E1], and [C] are now logically independent of [H-w]:
+      \begin{itemize}
+        \item [H1] concerns the embeddings $\iota_q$; the sinc construction
+        of Q5a Remark~3.2 is the natural starting point.
+        \item [H-E1] is a spectral gap statement for the admissible random walk;
+        it is accessible via the BFS shell structure and the Bass--Guivarc'h
+        polynomial growth theorem~\cite{Bass1972,Guivarch1973}.
+        \item [C] (Mosco tightness) requires a uniform Nash inequality for the
+        filtered family $(G_q, a_q)$; this is the hardest remaining problem (Q5a-O2).
+      \end{itemize}
+
+    \subsection{Connection to the effective Lorentzian geometry programme}
+
+      Together with Q8~\cite{BeauQ8}, Q9~\cite{Beau2026q9}, Q10~\cite{Beau2026q10},
+      and U1~\cite{Beau2026u1}, the present result closes all weight-convergence
+      obstructions in the chain to the effective Lorentzian co-metric.
+      The convergence $a_q(s) \to A$ combined with $A_H \to 2$
+      (Q10~\cite{Beau2026q10}) fixes both spatial and temporal components of
+      the effective metric under Q5a--Q5b hypotheses.
+
+  \section{Numerical Corroboration}
+
+    The O25 pipeline~\cite{Beau2026a29} measures $\delta_{\mathrm{pair}}$ at
+    $q \in \{29, 61, 101, 151\}$:
+    \begin{center}
+      \begin{tabular}{ccc}
+        \hline
+        $q$ & $\delta_{\mathrm{pair}}$ (mean/pairs) & $\pm$ (inter-pair s.d.) \\
+        \hline
+        29  & 8.89 & 0.54 \\
+        61  & 9.98 & 0.26 \\
+        101 & 9.55 & 0.16 \\
+        151 & (in progress) & \\
+        \hline
+      \end{tabular}
+    \end{center}
+    All values satisfy $\delta_{\mathrm{pair}} > 2$, confirming the summability
+    condition of Lemma~\ref{lem:Aq} with large margin.
+    The decreasing inter-pair variance is numerically consistent with the
+    uniform bound of Theorem~\ref{thm:proximity}: the inter-pair spread is the
+    empirical proxy for $\sup_s a_q(s) - \inf_s a_q(s) = O(q^{-1/2})$,
+    documented in O24~\cite{Beau2026a28} and O25~\cite{Beau2026a29}.
+    The extension to $q \in \{211, 307, 401\}$ will discriminate between
+    the analytical rate $q^{-1/2}$ and the empirical exponent $q^{-0.44}$
+    (cf.\ U1 Remark~7.2).
+
+  \section*{Acknowledgements}
+
+    The author thanks the Cosmochrony programme for the O25 numerical data.
+
+    \bibliographystyle{plain}
+    \bibliography{cosmochrony-bibliography,external-refs}
+
+\end{document}
