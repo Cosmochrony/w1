@@ -1,8 +1,8 @@
 # W1 — Weight Stabilisation of the Admissible Dirichlet Form
 
 This repository contains the source of the **W1 Cosmochrony paper**
-[*Weight Stabilisation of the Admissible Dirichlet Form: Proof of Hypothesis [H-w] from
-Spectral Universality*](out/w1.pdf).
+*Weight Stabilisation of the Admissible Dirichlet Form: Proof of Hypothesis [H-w] from
+Spectral Universality*.
 
 This paper closes open problem Q5a-O3 by proving Hypothesis [H-w].
 
