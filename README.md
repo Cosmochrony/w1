@@ -40,7 +40,6 @@ w1/
 
 ## Links
 
-- 📄 [Paper PDF](out/w1.pdf)
 - 🔗 DOI: [10.5281/zenodo.19886319](https://doi.org/10.5281/zenodo.19886319)
 - 🌐 Website: https://cosmochrony.org/science/emergent-geometry/w1/
 
