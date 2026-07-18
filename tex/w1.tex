@@ -144,8 +144,9 @@ Proof of Hypothesis~\textup{[H-w]} from Spectral Universality}
     The filtered Dirichlet form is
     $\Eq(f, g) = \sum_{s \in S_q} a_q(s)\,
     \langle (I - \Pi_q \rho_q(s) \Pi_q)\, f,\, g \rangle$,
-    where $\Pi_q$ is the admissibility projector derived from the Born--Infeld
-    saturation constraint~\cite{Beau2026c,Beau2026a26}.
+    where $\Pi_q$ is the admissibility projector associated with the capacity bound
+    [A-cap] of~\cite{Beau2026c}, implemented at the discrete level in
+    O22~\cite{Beau2026a26}.
   \end{definition}
 
   \begin{remark}[Partial sum vs.\ Cesàro mean]
@@ -318,9 +319,10 @@ Proof of Hypothesis~\textup{[H-w]} from Spectral Universality}
 
     By U1 Proposition~4.1, $\sstar(n) = \|\Pi_{S_n} d\pi_1 \Pi_{S_n}\|_{\op}$
     where $d\pi_1 = \sum_{s \in S_q}(I - \pi_1(s))$.
-    The Born--Infeld constraint (paper C~\cite{Beau2026c}, O22~\cite{Beau2026a26})
-    gives $\|\Pi_q d\rho_q \Pi_q\|_{\op} \leq \cBI$ for all $q$,
-    and in the BI-saturated regime the bound is achieved:
+    The capacity axiom [A-cap] of paper C~\cite{Beau2026c}, whose discrete amplitude
+    form is analysed in O22~\cite{Beau2026a26}, is taken here as the standing
+    operator-form bound $\|\Pi_q d\rho_q \Pi_q\|_{\op} \leq \cBI$ for all $q$;
+    in the BI-saturated regime the bound is achieved:
     $\sstar(n) \sim \cBI^2 / |S_n|$.
     By Bass's theorem~\cite{Bass1972}, $|S_n| \sim C_{\Heis} n^3$ for
     $G_q = \Heis_3(\mathbb{Z}/q\mathbb{Z})$, giving
