@@ -21,7 +21,9 @@ has two logically distinct steps:
 
 $A$ is identified as a functional of $c_{\mathrm{BI}}$ and the Heisenberg BFS growth data
 (addressing Q5a-O5 at the structural level). After this paper, the proof of Q5a Theorem T3
-(Mosco convergence) requires only [H1], [H-E1], and [C].
+(Mosco convergence) requires only [H1], [H-E1], and [C]; the Q5a-O2 Fourier analysis rules out
+[H-E1] at the $q^{-1}$ scale and supersedes [C] (zero-form Mosco limit), leaving the reformulated
+tightness question ([H2]) open.
 
 ## Keywords
 

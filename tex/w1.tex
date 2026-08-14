@@ -49,8 +49,10 @@ Proof of Hypothesis~\textup{[H-w]} from Spectral Universality}
     We identify $A$ as a functional of~$\cBI$ and the Heisenberg BFS growth data,
     addressing open problem Q5a-O5 at the level of a structural argument.
     After this paper, the proof of Q5a Theorem~T3 (Mosco convergence of $\Eq$)
-    requires only three further hypotheses: [H1] (moderate), [H-E1] (moderate),
-    and~[C] (hard).
+    requires only three further hypotheses: [H1], [H-E1], and~[C].
+    The Q5a-O2 Fourier analysis~\cite{Beau2026q5ao2} rules out [H-E1] at the $q^{-1}$
+    scale and supersedes [C] (the published form has zero-form Mosco limit); the
+    reformulated tightness question ([H2]) is open.
   \end{abstract}
 
   \paragraph{Keywords.}
@@ -104,9 +106,12 @@ Proof of Hypothesis~\textup{[H-w]} from Spectral Universality}
     Since $\Pi$ is non-injective, distinct pre-image representatives in the
     same fibre $\Pi^{-1}(x)$ yield identical observable values; in particular,
     admissible observables are \emph{constant on projection fibres}.
-    At the level of central characters, the BI parity involution $c \leftrightarrow q - c$
-    (O22~\cite{Beau2026a26}) is the discrete expression of this fibre-constancy:
-    $\sigma_c = \sigma_{q-c}$ for all~$c$.
+    At the level of central characters, the parity involution $c \leftrightarrow q - c$ is the
+    candidate fibre structure of the pair sector, a structurally motivated hypothesis:
+    O18~\cite{Beau2026a22} establishes Born--Infeld parity as an equivariant symmetry and
+    states the fibre identification as an open problem.
+    The spectral equality $\sigma_c = \sigma_{q-c}$ for all~$c$ is the conjugation identity
+    (O17~\cite{Beau2026a21}; recalled in O18 Theorem~3.1).
     U1~\cite{Beau2026u1} extends this to the full large-$q$ limit:
     $\sigma_c(n) \to \sstar(n)$ \emph{uniformly in~$c$},
     i.e.\ all characters merge into the single Schr\"odinger fibre class
@@ -214,9 +219,11 @@ Proof of Hypothesis~\textup{[H-w]} from Spectral Universality}
     Under the admissibility constraint derived from the non-injective
     projection~$\Pi$~\cite{Beau2026m,Beau2026l}, the fingerprint energy $\sigma_c(n)$
     depends only on the projection class of~$c$, not on its representative.
-    In the large-$q$ limit, the BI parity involution~\cite{Beau2026a26} and
-    the Schr\"odinger universality (U1~\cite{Beau2026u1}) jointly force all
-    characters into a single fibre class: $\sigma_c \to \sstar$ uniformly.
+    In the large-$q$ limit, the conjugate-pair equality $\sigma_c = \sigma_{q-c}$
+    (the conjugation identity, O17~\cite{Beau2026a21}; recalled in O18
+    Theorem~3.1~\cite{Beau2026a22}) and the Schr\"odinger universality
+    (U1~\cite{Beau2026u1}) jointly force all
+    characters into a single class: $\sigma_c \to \sstar$ uniformly.
     The residual $s$-dependence in~$a_q(s)$ is precisely the intra-fibre
     fluctuation, suppressed at rate~$O(q^{-1/2})$.
     This is the quantitative statement of the general principle that admissible
@@ -374,8 +381,10 @@ Proof of Hypothesis~\textup{[H-w]} from Spectral Universality}
         {[H2]}   & Strong convergence of rescaled generators   & Open (Q5a-O4) \\
         {[H-w]}  & Weights $a_q(s) \to A > 0$
         & \textbf{Proved} (Corollary~\ref{cor:Hw}) \\
-        {[H-E1]} & Uniform Poincar\'e inequality               & Open (Q5a-O2, moderate) \\
-        {[C]}    & Spectral tightness $\Rightarrow$ Mosco      & Open (Q5a-O2, hard) \\
+        {[H-E1]} & Uniform Poincar\'e inequality
+        & Ruled out at the $q^{-1}$ scale (Q5a-O2~\cite{Beau2026q5ao2}) \\
+        {[C]}    & Spectral tightness $\Rightarrow$ Mosco
+        & Superseded: zero-form Mosco limit (Q5a-O2~\cite{Beau2026q5ao2}) \\
         \hline
       \end{tabular}
       \caption{Status of Q5a hypotheses after W1.
@@ -390,10 +399,12 @@ Proof of Hypothesis~\textup{[H-w]} from Spectral Universality}
       \item [H1] concerns the embeddings $\iota_q$; the sinc construction
       of Q5a Remark~3.2 is the natural starting point.
       \item [H-E1] is a spectral gap statement for the admissible random walk;
-      it is accessible via the BFS shell structure and the Bass--Guivarc'h
-      polynomial growth theorem~\cite{Bass1972,Guivarch1973}.
-      \item [C] (Mosco tightness) requires a uniform Nash inequality for the
-      filtered family $(G_q, a_q)$; this is the hardest remaining problem (Q5a-O2).
+      the Q5a-O2 Fourier analysis~\cite{Beau2026q5ao2} rules it out at the $q^{-1}$
+      scale (the published form is $O(q^{-2})$ on normalised modes), so any coercivity
+      must occur at another normalisation.
+      \item [C] (Mosco tightness) is superseded: the published admissibility form has
+      zero-form Mosco limit on the canonical Fourier filtration
+      (Q5a-O2~\cite{Beau2026q5ao2}); the reformulated tightness question ([H2]) is open.
     \end{itemize}
 
   \subsection{Connection to the effective Lorentzian geometry programme}
