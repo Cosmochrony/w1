@@ -1,6 +1,6 @@
 # W1 — What Weight Stabilisation Would Require
 
-This repository contains version 2.0 of *What Weight Stabilisation
+This repository contains version 2.0.1 of *What Weight Stabilisation
 Would Require: A Finite-Window Audit of Admissibility Weights*.
 
 Version 1 claimed to prove a common positive limit for the Q5a generator weights.
