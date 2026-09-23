@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you cite this work, please use the metadata from this file."
-title: "Weight Stabilisation of the Admissible Dirichlet Form: Proof of Hypothesis [H-w] from Spectral Universality"
+title: "What Weight Stabilisation Would Require: A Finite-Window Audit of Admissibility Weights"
 type: software
 authors:
   - family-names: "Beau"
@@ -9,9 +9,10 @@ repository-code: "https://github.com/Cosmochrony/w1"
 url: "https://cosmochrony.org/science/emergent-geometry/w1/"
 doi: "10.5281/zenodo.19886319"
 license: "CC-BY-4.0"
+version: "2.0"
 preferred-citation:
   type: article
-  title: "Weight Stabilisation of the Admissible Dirichlet Form: Proof of Hypothesis [H-w] from Spectral Universality"
+  title: "What Weight Stabilisation Would Require: A Finite-Window Audit of Admissibility Weights"
   authors:
     - family-names: "Beau"
       given-names: "Jérôme"

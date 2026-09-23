@@ -1,8 +1,19 @@
 \documentclass[12pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\input{glyphtounicode}
+\pdfgentounicode=1
 \usepackage{amsmath, amsthm, amssymb}
 \usepackage[margin=1in]{geometry}
 \usepackage{hyperref}
 \usepackage{mathtools}
+\usepackage{doi}
+\hypersetup{
+  pdftitle={What Weight Stabilisation Would Require: A Finite-Window Audit of Admissibility Weights},
+  pdfauthor={J\'er\^ome Beau},
+  pdfsubject={Conditional weight convergence and finite-window calibration},
+  pdfkeywords={admissibility weights, finite BFS window, fingerprint response, withdrawn claim}
+}
 
 \providecommand{\doi}[1]{\href{https://doi.org/#1}{\texttt{doi:#1}}}
 
@@ -24,42 +35,42 @@
 \newcommand{\Eoo}{\mathcal{E}}
 \newcommand{\nstar}{n^{*}(q)}
 
-\title{Weight Stabilisation of the Admissible Dirichlet Form:\\
-Proof of Hypothesis~\textup{[H-w]} from Spectral Universality}
+\title{What Weight Stabilisation Would Require:\\
+A Finite-Window Audit of Admissibility Weights}
 \author{J\'er\^ome Beau}
-\date{2026}
+\date{2026\\[2pt]\small Version 2.0, candidate}
 
 \begin{document}
 
   \maketitle
 
   \begin{abstract}
-    We close open problem Q5a-O3 of the Cosmochrony spectral admissibility
-    programme~\cite{Beau2026q5a} by proving Hypothesis~[H-w]:
-    the admissibility weights $a_q(s)$, which enter the filtered Dirichlet form~$\Eq$,
-    converge to a positive constant~$A > 0$ uniformly in the generator $s \in S_q$.
-    The proof has two logically distinct steps.
-    First, the uniform spectral universality theorem U1~\cite{Beau2026u1} gives
-    $|a_q(s) - A_q| \leq C q^{-1/2} A_q$ where
-    $A_q = \sum_{n=1}^{\nstar} \sstar(n)$ is the partial sum of the limit profile.
-    Second, a separate lemma shows $A_q \nearrow A > 0$: the series $\sum_n \sstar(n)$
-    converges (by the O-series condition $\delta^*/2 > 1$, empirically
-    $\delta_{\mathrm{pair}} \approx 9.5$--$10$) and is bounded below by the
-    non-trivial first term $\sstar(1) > 0$.
-    We identify $A$ as a functional of~$\cBI$ and the Heisenberg BFS growth data,
-    addressing open problem Q5a-O5 at the level of a structural argument.
-    After this paper, the proof of Q5a Theorem~T3 (Mosco convergence of $\Eq$)
-    requires only three further hypotheses: [H1], [H-E1], and~[C].
-    The Q5a-O2 Fourier analysis~\cite{Beau2026q5ao2} rules out [H-E1] at the $q^{-1}$
-    scale and supersedes [C] (the published form has zero-form Mosco limit); the
-    reformulated tightness question ([H2]) is open.
+    Version 1 claimed to prove common positive convergence of the admissibility
+    weights from spectral universality.
+    That proof imported a relative profile estimate never supplied by U1, identified
+    the weights with shell-capacity sums without a bridge to Q5a's fingerprint-response
+    averages, and sent the calibrated fitting-window endpoint to infinity although
+    the established five-block protocol has endpoint at most~22 for large primes.
+    We retain the exact conditional summation inequality, but it concerns a separately
+    defined partial-sum proxy.
+    For a fixed nonnegative profile and the published window protocol, that proxy's
+    target is the sum through depth~22, provided the necessary convergence input is
+    supplied; it is not the infinite series asserted in version~1.
+    Neither the proxy inequality nor fibre constancy proves convergence of Q5a's
+    actual weights, whose horizontal-generator limits may differ.
+    The finite O25 pair exponents do not establish a global pointwise profile bound
+    or identify a Born--Infeld normalisation.
+    Thus [H-w] remains open on these inputs.
+    \textbf{Interpretive outlook.}
+    The audit isolates a testable bridge: construct the measured response weights
+    from the block-sampled rank observable and control them uniformly on the
+    calibrated finite window before assigning an effective kinetic coefficient.
   \end{abstract}
 
   \paragraph{Keywords.}
-    Spectral admissibility; Dirichlet form; Mosco convergence; Weil representation;
-    Heisenberg group; Born--Infeld saturation; Fibre-invariance;
-    Non-injective projection; Spectral universality; Weight convergence;
-    Admissibility weights; BFS shell structure.
+    Spectral admissibility; Dirichlet form; finite BFS window; fingerprint response;
+    Heisenberg group; conditional weight convergence; rank increment;
+    withdrawn claim; Born--Infeld normalisation.
 
     \clearpage
     \tableofcontents
@@ -69,362 +80,317 @@ Proof of Hypothesis~\textup{[H-w]} from Spectral Universality}
   \section{Introduction}
   \label{sec:intro}
 
-  The paper Q5a~\cite{Beau2026q5a} establishes the large-$q$ limit of the admissible
-  Dirichlet form $\Eq$ on the Heisenberg graph $G_q = \Heis_3(\mathbb{Z}/q\mathbb{Z})$,
-  conditional on four hypotheses.
-  Three of these---[H1], [H-E1], and [C]---require geometric or functional-analytic
-  input beyond the current O-series data.
-  The fourth, Hypothesis~[H-w], asks for the convergence $a_q(s) \to A > 0$,
-  and Q5a identifies it explicitly as derivable from the stabilisation
-  of~$\delta_{\mathrm{pair}}$ documented in O12--O25 (open problem Q5a-O3).
+  The published W1 claim was that the four generator weights of the Q5a
+  admissibility form converge to one positive constant.
+  Its proof used a relative universality estimate attributed to U1.
+  U1 version 2.0~\cite{Beau2026u1} withdraws even the absolute estimate claimed
+  in its version 1; the relative estimate used here was never proved there.
+  Moreover, Q5a version 3.2~\cite{Beau2026q5a} now states a different weight
+  observable and allows distinct limits for the two generator directions.
+  This paper records the surviving elementary implication and the missing
+  identifications rather than asserting a closed chain.
 
-  Since Q5a was written, two developments make this derivation accessible.
-  First, U1~\cite{Beau2026u1} proves that every fingerprint energy $\sigma_c(n)$
-  converges to the same limit profile $\sstar(n)$ at rate $O(q^{-1/2})$,
-  uniformly over all characters~$c$.
-  Second, the O25 campaign~\cite{Beau2026a29} confirms empirically that
-  $\delta_{\mathrm{pair}} \approx 9.5$--$10$, establishing the summability
-  condition $\delta^*/2 > 1$ needed to prove $\sum_n \sstar(n) < \infty$.
-
-  We separate the proof into two steps to make the logical structure transparent:
-  Theorem~\ref{thm:proximity} (proximity, from U1) and Lemma~\ref{lem:Aq}
-  (convergence of the target, from the O-series).
-  The proof is non-circular: U1 Theorem~1.1 is established under [H1] and [H2]
-  alone and does not depend on [H-w]
-  (cf.\ U1 Remark~7.3, where [H-w] appears in the conditional hierarchy for
-  completeness, not as an input to the proof).
-
-  \subsection*{Structural mechanism}
-
-    The convergence $a_q(s) \to A$ is not merely a technical consequence of averaging:
-    it reflects a deeper structural property of the Cosmochrony framework,
-    the \emph{observable space principle}~\cite{Beau2026m,Beau2026l}:
-    admissible observables are functions on $\mathcal{O} = \mathrm{Im}\,\Pi$,
-    not on~$\Omega$.
-    % Foundation M Remark~4.3 (rem:observable-space) states this as an explicit
-    % principle; ENI~\cite{Beau2026l} proves that non-injectivity is structurally necessary.
-    Since $\Pi$ is non-injective, distinct pre-image representatives in the
-    same fibre $\Pi^{-1}(x)$ yield identical observable values; in particular,
-    admissible observables are \emph{constant on projection fibres}.
-    At the level of central characters, the parity involution $c \leftrightarrow q - c$ is the
-    candidate fibre structure of the pair sector, a structurally motivated hypothesis:
-    O18~\cite{Beau2026a22} establishes Born--Infeld parity as a covariance of the response family and
-    states the fibre identification as an open problem.
-    The spectral equality $\sigma_c = \sigma_{q-c}$ for all~$c$ is the conjugation identity
-    (O17~\cite{Beau2026a21}; recalled in O18 Theorem~3.1).
-    U1~\cite{Beau2026u1} extends this to the full large-$q$ limit:
-    $\sigma_c(n) \to \sstar(n)$ \emph{uniformly in~$c$},
-    i.e.\ all characters merge into the single Schr\"odinger fibre class
-    in the continuum limit.
-    The convergence $a_q(s) \to A$ is therefore not an independent regularity
-    assumption but a forced consequence of the non-injectivity of $\Pi$,
-    made quantitative by U1.
+  The numerical source must be read at its own scope.
+  O25~\cite{Beau2026a29} fits pair exponents over finite windows.
+  The historical value $\delta_{\mathrm{pair}}\approx7.44$ came from O16's
+  single-pair sample; O25's five-prime means range from 8.784 to 9.983, and its
+  large-prime raw statistic reaches 7.61 at $q=601$.
+  O25 expressly does not determine an asymptotic exponent.
+  None of these values is a bound on every term of a limiting profile.
 
   \subsection*{Standing conventions}
 
-    Throughout, $q \geq 2$ denotes an odd prime.
-    We write $G_q = \Heis_3(\mathbb{Z}/q\mathbb{Z})$ for the Heisenberg group,
-    $\rho_q$ for its Weil representation on $\mathcal{C}_q = L^2(\mathbb{Z}/q\mathbb{Z})$,
-    and $S_q = \{X^{\pm 1}, Y^{\pm 1}\}$ for the standard generating set.
-    The BFS walk on $G_q$ partitions it into shells $(S_n)_{n \geq 0}$;
-    $\nstar$ denotes the upper endpoint of the fitting window
-    (calibrated as in~\cite{Beau2026a29,Beau2026a32}).
-    The fingerprint energy is $\sigma_c(n) = \delta r_n(c) / |S_n|$,
-    where $\delta r_n(c)$ counts new linearly independent Weil fingerprint vectors
-    in shell~$S_n$ at character~$c$ (O12~\cite{Beau2026a16}).
-
+  Let $q$ range over odd primes, $G_q=\Heis_3(\mathbb Z/q\mathbb Z)$,
+  and $S_q=\{X^{\pm1},Y^{\pm1}\}$.
+  Let $n^*(q)$ denote the upper endpoint of the calibrated O25/O28 fitting
+  window when that protocol is intended.
+  The O25 observable $\sigma_{q,\mathbf c}(n)=\Delta r_{q,\mathbf c}(n)/|S_n|$
+  depends on a three-component generic block $\mathbf c$ and a sampling rule,
+  not only on one central character~\cite{Beau2026a29}.
+  We use $p(n)$ for an arbitrary supplied nonnegative comparison profile.
+  No theorem below identifies $p$ with a limit of the O25 observable.
+  In Q5a, $a_q(s)$ denotes the actual fingerprint-response average.
+  A partial-sum proxy will be written $b_q(s)$ to keep the two objects distinct.
   \section{Admissibility Weights and Hypothesis [H-w]}
 
-  We recall the relevant objects from Q5a~\cite{Beau2026q5a}.
+  Q5a version 3.2~\cite{Beau2026q5a} calls $a_q(s)$ a fingerprint-response
+  average and uses the form
+  \[
+    \Eq(f)=\frac{q^{-2}}{2}\sum_{s\in S_q}a_q(s)
+    \|(\rho_q(s)-I)f\|^2
+  \]
+  on its filtration stage, without an interior projector.
+  Its current [H-$w'$] asks separately for positive limits $A_X$ and $A_Y$
+  for the $X$ and $Y$ generator pairs.
+  A common limit is a stronger claim and requires its own evidence.
 
-  \begin{definition}[Admissibility weights; Q5a Definition~2.3]
+  \begin{definition}[Partial-sum proxy, distinct from Q5a weights]
     \label{def:aw}
-    For $s \in S_q$ with associated central character $c(s) \in (\mathbb{Z}/q\mathbb{Z})^\times$,
-    the \emph{admissibility weight} is the cumulative fingerprint capacity
-    over the BFS window:
+    Suppose a family of nonnegative shell observables
+    $\sigma_{q,c}(n)$ and a map $c_q:S_q\to(\mathbb Z/q\mathbb Z)^\times$
+    are supplied.
+    Define the \emph{proxy}
     \begin{equation}
       \label{eq:aw}
-      a_q(s) := \sum_{n=1}^{\nstar} \sigma_{c(s)}(n).
+      b_q(s):=\sum_{n=1}^{n^*(q)}\sigma_{q,c_q(s)}(n).
     \end{equation}
-    The filtered Dirichlet form is
-    $\Eq(f, g) = \sum_{s \in S_q} a_q(s)\,
-    \langle (I - \Pi_q \rho_q(s) \Pi_q)\, f,\, g \rangle$,
-    where $\Pi_q$ is the admissibility projector associated with the capacity bound
-    [A-cap] of~\cite{Beau2026c}, implemented at the discrete level in
-    O22~\cite{Beau2026a26}.
+    Neither the map $c_q$ nor an identity $a_q(s)=b_q(s)$ is supplied by
+    the O25 or Q5a statements cited here.
+    In particular, the displayed definition is not Q5a Definition~2.3.
   \end{definition}
 
-  \begin{remark}[Partial sum vs.\ Cesàro mean]
+  \begin{remark}[Partial sum versus Ces\`aro mean]
     \label{rem:partial-sum}
-    The weight $a_q(s)$ is a partial sum, not the window-averaged mean
-    $\frac{1}{\nstar}\sum_n \sigma_{c(s)}(n)$.
-    For a decaying profile $\sstar(n) \sim n^{-\delta^*/2}$ with $\delta^*/2 > 1$,
-    the mean tends to zero (it is $O(\nstar^{1-\delta^*/2}) \to 0$),
-    whereas the partial sum converges to the finite positive limit
-    $A = \sum_{n=1}^{\infty} \sstar(n) > 0$.
-    Hypothesis~[H-w] requires $a_q(s) \to A > 0$, which is compatible
-    only with the partial-sum definition; this choice also gives the
-    correct identification $\Eoo(f,g) = A \int \partial_x f\, \partial_x g\, dx$
-    as the Mosco limit~\cite{Beau2026q5a}.
+    For a fixed nonnegative summable profile $p$ with
+    $A_\infty:=\sum_{n\ge1}p(n)>0$ and an unbounded cutoff $N$, the mean
+    $N^{-1}\sum_{n\le N}p(n)\sim A_\infty/N$, while the partial sum tends
+    to $A_\infty$.
+    The former $O(N^{1-\delta^*/2})$ assertion for a profile
+    $p(n)\asymp n^{-\delta^*/2}$ with exponent greater than~2 was false.
+    For the calibrated finite window, neither calculation identifies the
+    actual Q5a weight or its Mosco limit.
   \end{remark}
 
-  \begin{hypothesis}[[H-w]; Q5a Hypothesis~2.4]
+  \begin{hypothesis}[Historical common-weight hypothesis [H-w]]
     \label{hyp:Hw}
-    There exists a constant $A > 0$ such that
+    The version-1 claim required a constant $A>0$ such that
     \begin{equation}
       \label{eq:Hw}
-      \sup_{s \in S_q} |a_q(s) - A| \;\to\; 0
-      \quad \text{as } q \to \infty.
+      \sup_{s\in S_q}|a_q(s)-A|\longrightarrow0.
     \end{equation}
+    This is retained as an open target, not as a result of this paper.
+    It implies the pair of Q5a [H-$w'$] limits with $A_X=A_Y=A$,
+    but Q5a's separate limits do not imply a common value.
   \end{hypothesis}
 
   \section{Main Result}
 
-  \begin{theorem}[Proximity to the partial-sum target]
+  \begin{theorem}[Conditional proximity of the partial-sum proxy]
     \label{thm:proximity}
-    Under the Q5a framework with hypotheses~[H1] and~[H2],
-    there exists a universal constant $C > 0$ such that for all odd primes $q$
-    and all $s \in S_q$:
+    Suppose Definition~\ref{def:aw} applies and a supplied profile
+    $p(n)\ge0$ satisfies, for an error $\varepsilon_q\ge0$,
+    \begin{equation}
+      \label{eq:U1}
+      |\sigma_{q,c}(n)-p(n)|\le\varepsilon_q p(n)
+      \quad\text{for every relevant }c,\quad 1\le n\le n^*(q).
+    \end{equation}
+    Then, with $A_q:=\sum_{n=1}^{n^*(q)}p(n)$,
     \begin{equation}
       \label{eq:proximity}
-      \bigl|a_q(s) - A_q\bigr| \leq C\, q^{-1/2}\, A_q,
-      \qquad A_q := \sum_{n=1}^{\nstar} \sstar(n).
+      \sup_{s\in S_q}|b_q(s)-A_q|\le\varepsilon_q A_q.
     \end{equation}
+    U1 version 2.0 supplies neither~\eqref{eq:U1} nor a value
+    $\varepsilon_q=O(q^{-1/2})$.
   \end{theorem}
 
   \begin{proof}
-    By U1 Theorem~1.1~\cite{Beau2026u1}, under [H1] and [H2]:
-    \begin{equation}
-      \label{eq:U1}
-      |\sigma_c(n) - \sstar(n)| \leq C\, q^{-1/2}\, \sstar(n)
-      \quad \forall\, c \in (\mathbb{Z}/q\mathbb{Z})^\times,\;\; n \leq \nstar,
-    \end{equation}
-    with $C = L + B$ (U1's universal constant, $L = 8\pi$).
-    Summing~\eqref{eq:U1} over $n = 1, \ldots, \nstar$:
-    \begin{equation}
-      \bigl|a_q(s) - A_q\bigr|
-      \leq \sum_{n=1}^{\nstar} |\sigma_{c(s)}(n) - \sstar(n)|
-      \leq C\, q^{-1/2} \sum_{n=1}^{\nstar} \sstar(n)
-      = C\, q^{-1/2}\, A_q.
-    \end{equation}
-    The bound is uniform in $s \in S_q$: estimate~\eqref{eq:U1} holds for every
-    $c \in (\mathbb{Z}/q\mathbb{Z})^\times$, hence in particular for each $c(s)$.
+    For each $s$, sum the absolute deviations in~\eqref{eq:U1} over
+    $1\le n\le n^*(q)$ and apply the triangle inequality.
+    The same bound holds after taking the supremum over $S_q$.
+    The proof uses no property of Q5a's response averages.
   \end{proof}
 
-  \begin{proposition}[Fibre-invariance as the structural source of uniformity]
+  \begin{proposition}[Fibre constancy does not give common weights]
     \label{prop:fibre}
-    The uniformity of bound~\eqref{eq:proximity} over $s \in S_q$ is not a
-    consequence of the finite cardinality $|S_q| = 4$, but of the structural
-    fibre-invariance of admissible observables.
-    Under the admissibility constraint derived from the non-injective
-    projection~$\Pi$~\cite{Beau2026m,Beau2026l}, the fingerprint energy $\sigma_c(n)$
-    depends only on the projection class of~$c$, not on its representative.
-    In the large-$q$ limit, the conjugate-pair equality $\sigma_c = \sigma_{q-c}$
-    (the conjugation identity, O17~\cite{Beau2026a21}; recalled in O18
-    Theorem~3.1~\cite{Beau2026a22}) and the Schr\"odinger universality
-    (U1~\cite{Beau2026u1}) jointly force all
-    characters into a single class: $\sigma_c \to \sstar$ uniformly.
-    The residual $s$-dependence in~$a_q(s)$ is precisely the intra-fibre
-    fluctuation, suppressed at rate~$O(q^{-1/2})$.
-    This is the quantitative statement of the general principle that admissible
-    observables live in $\mathcal{O} = \mathrm{Im}\,\Pi$, not in~$\Omega$.
-    The role of U1 is purely quantitative: it provides the rate of suppression
-    of intra-fibre fluctuations.
-    The structural origin of the convergence $a_q(s) \to A$ lies in
-    fibre-invariance alone and does not depend on U1; U1 is needed only to
-    control the residual at the finite-$q$ level.
+    Constancy of an observable on each fibre of a non-injective
+    projection does not imply that its values are equal across fibres
+    or that they converge uniformly as a parameter varies.
   \end{proposition}
 
-  \begin{lemma}[Non-degenerate window sum]
+  \begin{proof}
+    Let $\Omega=\{a,a',b,b'\}$ and let $\Pi$ map $a,a'$ to~0 and
+    $b,b'$ to~1.
+    Set the observable equal to~0 on the first fibre and~1 on the
+    second for every $q$.
+    It is fibre-constant, yet its inter-fibre spread stays equal to~1.
+    Conjugate-pair parity, even if established for the measured
+    observable, equates at most the two members of each pair and
+    does not supply equality across distinct pairs.
+  \end{proof}
+
+  O17's exact block-independence theorem concerns its explicit toy
+  model~\cite{Beau2026a21}; it is not an identity for the independently
+  sampled three-component O25 rank observable.
+  O18 records the parity-to-fibre identification as open.
+  The version-1 transfer of these results to all O25 characters and
+  then to the four Q5a weights is therefore an unproved bridge.
+
+  \begin{lemma}[Target of a bounded fitting window]
     \label{lem:Aq}
-    The sequence $(A_q)_q$ converges monotonically to a finite positive limit:
+    Let $p(n)\ge0$ be a fixed profile and
+    $A_q=\sum_{n=1}^{n^*(q)}p(n)$.
+    If $n^*(q)\to22$ in probability, then
     \begin{equation}
       \label{eq:Aq-limit}
-      A_q = \sum_{n=1}^{\nstar} \sstar(n)
-      \;\nearrow\; A := \sum_{n=1}^{\infty} \sstar(n) \;\in\; (0, +\infty).
+      A_q\longrightarrow A_{22}:=\sum_{n=1}^{22}p(n)
+      \quad\text{in probability}.
     \end{equation}
+    The limit is positive if at least one of its first 22 terms is
+    positive.
+    No summability beyond depth~22 is needed.
+    Neither monotonicity of $A_q$ in $q$ nor equality with
+    $\sum_{n\ge1}p(n)$ follows.
   \end{lemma}
 
   \begin{proof}
-    \textbf{Positivity.}
-    The Schr\"odinger representation $\pi_1$ on $L^2(\mathbb{R})$ is irreducible
-    (Stone--von Neumann theorem), so the BFS walk under $\pi_1$ generates
-    a non-zero fingerprint increment at the first shell: $\delta r_1(\sstar) > 0$,
-    hence $\sstar(1) > 0$.
-    Since $A_q \geq \sstar(1) > 0$ for all $q$, we conclude $A \geq \sstar(1) > 0$.
-
-    \textbf{Finiteness.}
-    The O25 campaign~\cite{Beau2026a29} establishes that the limit profile satisfies
-    $\sstar(n) \leq K (n+1)^{-\delta^*/2}$ for constants $K > 0$ and
-    $\delta^*/2 \approx 4.75$--$5.0$.
-    Since $\delta^*/2 > 1$:
-    \begin{equation}
-      \sum_{n=1}^{\infty} \sstar(n)
-      \leq K \sum_{n=1}^{\infty} (n+1)^{-\delta^*/2}
-      \leq K\, \zeta\!\left(\tfrac{\delta^*}{2}\right)
-      < \infty.
-    \end{equation}
-    The condition $\delta^*/2 > 1$ is the content of the O-series stabilisation:
-    $\delta_{\mathrm{pair}} > 2$ holds with a large margin
-    (empirically $\delta_{\mathrm{pair}} \approx 9.5$--$10$).
-
-    \textbf{Monotone convergence.}
-    Since $\sstar(n) > 0$ for all $n$, the partial sums $A_q$ are strictly increasing
-    in $\nstar$, hence non-decreasing in $q$.
-    Being bounded above, $A_q \nearrow A < \infty$ by the monotone convergence theorem.
+    Because $n^*(q)$ is integer-valued, convergence in probability
+    to~22 gives $\mathbb P(n^*(q)=22)\to1$.
+    On that event $A_q=A_{22}$ exactly.
+    Positivity is immediate from the stated nonnegative term.
   \end{proof}
 
-  Combining the two results yields [H-w] with a quantitative rate.
+  The Critical Coverage note~\cite{Beau2026ccnote} proves
+  $n_1(q)\le22$ for every prime $q\ge311$ and $n_1(q)\to22$ in
+  probability for its stated five-block calibration.
+  Version 1 identifies $n^*(q)$ with the O25/O28 calibrated endpoint.
+  Applying the lemma to another sampling protocol requires identifying
+  its endpoint with that five-block statistic; it cannot be assumed.
+  In particular, the old claim that the calibrated endpoint grows at a
+  polynomial rate contradicts the proved five-block law.
 
-  \begin{corollary}[Proof of [H-w]]
+  \begin{corollary}[Conditional bridge to a common weight]
     \label{cor:Hw}
-    Under [H1] and [H2], for all odd primes $q$ and all $s \in S_q$:
+    Suppose the hypotheses of Theorem~\ref{thm:proximity} hold with
+    $\varepsilon_q\to0$, the same cutoff obeys $n^*(q)\to22$ in
+    probability, and the actual Q5a weights satisfy
+    $d_q:=\sup_{s\in S_q}|a_q(s)-b_q(s)|\to0$ in probability.
+    Then
     \begin{equation}
       \label{eq:Hw-rate}
-      |a_q(s) - A|
-      \leq C\, q^{-1/2}\, A_q + (A - A_q).
+      \sup_{s\in S_q}|a_q(s)-A_{22}|
+      \le d_q+\varepsilon_q A_q+|A_q-A_{22}|
+      \longrightarrow0
+      \quad\text{in probability}.
     \end{equation}
-    Both terms vanish as $q \to \infty$:
-    the first at rate $O(q^{-1/2})$ by Theorem~\ref{thm:proximity},
-    the second because $A_q \nearrow A$ (Lemma~\ref{lem:Aq}).
-    Quantitatively, the tail satisfies
-    $(A - A_q) = \sum_{n > \nstar} \sstar(n) \leq K \zeta(\delta^*/2, \nstar + 1)$,
-    which is $O(q^{-1/2})$ provided
-    $\nstar \gtrsim q^{1/(\delta^*/2 - 1)}$---a condition satisfied by the
-    window calibration of~\cite{Beau2026a32}.
-    Hypothesis~[H-w] holds with the limit $A$ of Lemma~\ref{lem:Aq}.
+    If the three premises hold deterministically with an eventually
+    constant cutoff, the conclusion holds deterministically.
+    For $A_{22}>0$, that deterministic conclusion would imply
+    Hypothesis~\ref{hyp:Hw}.
+    None of the three load-bearing premises is proved here for Q5a.
   \end{corollary}
 
-  \begin{remark}[Connection to projective temporal ordering and the closing statement]
-    \label{rem:PTO}
-    The same structural mechanism underlies the projective temporal ordering
-    paper~\cite{Beau2026pto}: the temporal proxy
-    $I(n) = \sigma_{\mathrm{pair}}(0) - \sigma_{\mathrm{pair}}(n)$
-    is non-decreasing and universal precisely because the projected dynamics
-    forgets intra-fibre distinctions, retaining only the fibre-invariant
-    cumulative capacity.
-    Hypothesis~[H-w] is the \emph{static analogue} of this dynamical universality:
-    both are instances of the general principle that the non-injective projection
-    $\Pi$ erases representation-dependent details and leaves only the admissible
-    fibre class.
-    The argument of this section can therefore be summarised as follows:
+  \begin{proof}
+    Insert $b_q(s)$ and $A_q$, use Theorem~\ref{thm:proximity},
+    then apply Lemma~\ref{lem:Aq}.
+  \end{proof}
 
-    \begin{quote}
-      \itshape
-      Hypothesis~[H-w] is not an independent assumption but a direct consequence
-      of the fibre-invariance of admissible observables, combined with the uniform
-      spectral universality established in~U1.
-    \end{quote}
+  \begin{remark}[Status of the structural argument]
+    \label{rem:PTO}
+    Non-injectivity says that an observable on $\mathrm{Im}\,\Pi$ is
+    constant on each projection fibre.
+    It does not identify the O25 block observable with Q5a's generator
+    response averages, prove cross-fibre uniformity, or select a common
+    limit for $X$ and $Y$.
+    The projective temporal-ordering analogy is interpretive and
+    supplies none of these estimates.
   \end{remark}
 
-  \section{Identification of $A$ in Terms of $\cBI$}
+  \section{Can the Limit Be Identified with Born--Infeld Saturation?}
   \label{sec:A}
 
-  We address Q5a open problem O5.
+  \subsection{The measured object and a proposed normalisation}
 
-  \subsection{The Schr\"odinger limit profile and $\cBI$}
+  The O25 quantity is a Gram--Schmidt rank increment divided by a shell
+  cardinality, evaluated on sampled three-component blocks.
+  A Born--Infeld bound on a projected operator norm does not, by itself,
+  identify or bound that rank increment term by term.
+  The compressed operator-norm profile formerly imported from U1 is not
+  the O25 observable; U1 version 2.0 explicitly withdraws that
+  identification~\cite{Beau2026u1}.
+  Thus the claimed formula
+  $\sigma^*(n)=\|\Pi_{S_n}d\pi_1\Pi_{S_n}\|_{\op}$ is not available.
 
-    By U1 Proposition~4.1, $\sstar(n) = \|\Pi_{S_n} d\pi_1 \Pi_{S_n}\|_{\op}$
-    where $d\pi_1 = \sum_{s \in S_q}(I - \pi_1(s))$.
-    The capacity axiom [A-cap] of paper C~\cite{Beau2026c}, whose discrete amplitude
-    form is analysed in O22~\cite{Beau2026a26}, is taken here as the standing
-    operator-form bound $\|\Pi_q d\rho_q \Pi_q\|_{\op} \leq \cBI$ for all $q$;
-    in the BI-saturated regime the bound is achieved:
-    $\sstar(n) \sim \cBI^2 / |S_n|$.
-    By Bass's theorem~\cite{Bass1972}, $|S_n| \sim C_{\Heis} n^3$ for
-    $G_q = \Heis_3(\mathbb{Z}/q\mathbb{Z})$, giving
-    $\sstar(n) \approx (\cBI^2 / C_{\Heis})\, n^{-3}$.
-    The fitted exponent $\delta^*/2 \approx 4.75$--$5.0$ exceeds~3, consistent
-    with additional sub-leading corrections.
+  Bass growth concerns balls in the infinite discrete Heisenberg group.
+  A statement about finite $G_q$ shells needs a specified pre-wrap range;
+  it cannot be asserted as a global $n\to\infty$ asymptotic for a finite
+  group.
+  Even if a shell law proportional to $n^3$ applies in such a range,
+  its reciprocal gives an $n^{-3}$ leading profile only after a separate
+  saturation and norm-to-rank bridge.
+  It cannot simultaneously have a leading $n^{-p}$ law with
+  $p\approx4.75$--$5$: subleading corrections do not change the
+  leading exponent.
 
-  \subsection{Explicit formula for $A$}
+  \subsection{What remains of the explicit formula}
 
-    In the BI-saturated regime with decay exponent $\delta^*/2$:
-    \begin{equation}
-      \label{eq:A-formula}
-      A
-      = \sum_{n=1}^{\infty} \sstar(n)
-      \approx \frac{\cBI^2}{C_{\Heis}}\,
-      \zeta\!\left(\frac{\delta^*}{2}\right).
-    \end{equation}
-    For $\delta^* \approx 9.5$--$10$, $\zeta(4.75) \approx 1.08$,
-    so $A \approx \cBI^2 / C_{\Heis}$ to leading order.
+  The former expression
+  \begin{equation}
+    \label{eq:A-formula}
+    A_\infty\approx
+    \frac{c_{\mathrm{BI}}^2}{C_{\Heis}}\,
+    \zeta\!\left(\frac{\delta^*}{2}\right)
+  \end{equation}
+  is retained only as the version-1 proposal under a supplied global
+  power-law profile, saturation and normalisation.
+  It is not a consequence of O25, Q5a or U1.
+  For a bounded calibrated window the candidate target would instead be
+  $A_{22}=\sum_{n=1}^{22}p(n)$, if the proxy assumptions of
+  Corollary~\ref{cor:Hw} could be established.
+  No numerical value or Born--Infeld identity for Q5a's actual weights
+  follows from that conditional expression.
 
-    \begin{remark}[Status of~\eqref{eq:A-formula}]
-      \label{rem:formula}
-      Formula~\eqref{eq:A-formula} is a structural identification, not a complete proof.
-      The prefactor $\cBI^2 / C_{\Heis}$ assumes that the admissible generator norm
-      achieves its BI bound in the large-$q$ limit; making this precise requires
-      controlling $\|d\rho_q\|_{\op}/\|d\pi_1\|_{\op}$ uniformly, which is
-      the content of Q5a-O5 (open).
-      Lemma~\ref{lem:Aq} establishes $A \in (0,\infty)$ unconditionally;
-      formula~\eqref{eq:A-formula} pins down its value in terms of $\cBI$.
-    \end{remark}
+  \begin{remark}[Status of the proposed formula]
+    \label{rem:formula}
+    Equation~\eqref{eq:A-formula} is an unverified model expression, not
+    an identification of an admissibility coefficient.
+    To turn it into one requires a construction of the Q5a weight from
+    the O25 observable, a proved profile with controlled normalisation,
+    a valid shell range, and an independent saturation principle.
+    Fitting a finite pair exponent supplies none of these bridges.
+  \end{remark}
 
   \section{Consequences for the Q5a Programme}
   \label{sec:consequences}
 
-  \subsection{Updated status of Q5a Theorem T3}
+  \subsection{Status of the weight claim}
 
-    Q5a Theorem~T3 (Mosco convergence $\Eq \xrightarrow{\mathrm{Mosco}} \Eoo$)
-    is conditional on [H1], [H-w], [H-E1], and [C].
-    Corollary~\ref{cor:Hw} proves [H-w] under [H1] and~[H2].
-    Table~\ref{tab:status} summarises the updated status.
+  The historical Q5a formulation used the common-weight condition
+  [H-w] in a proposed Mosco argument.
+  Current Q5a version 3.2 defines the response-average weights and
+  states separate positive limits [H-$w'$] for the $X$ and $Y$ pairs.
+  It also identifies a zero-form limit at the published normalisation
+  under its stated conditions.
+  W1 proves neither the historical common-weight assertion nor the
+  current pair of limits.
 
-    \begin{table}[h]
-      \centering
-      \begin{tabular}{lll}
-        \hline
-        Hypothesis & Content & Status after W1 \\
-        \hline
-        {[H1]}   & Weil-block-compatible embeddings $\iota_q$ & Open (Q5a-O1) \\
-        {[H2]}   & Strong convergence of rescaled generators   & Open (Q5a-O4) \\
-        {[H-w]}  & Weights $a_q(s) \to A > 0$
-        & \textbf{Proved} (Corollary~\ref{cor:Hw}) \\
-        {[H-E1]} & Uniform Poincar\'e inequality
-        & Ruled out at the $q^{-1}$ scale (Q5a-O2~\cite{Beau2026q5ao2}) \\
-        {[C]}    & Spectral tightness $\Rightarrow$ Mosco
-        & Superseded: zero-form Mosco limit (Q5a-O2~\cite{Beau2026q5ao2}) \\
-        \hline
-      \end{tabular}
-      \caption{Status of Q5a hypotheses after W1.
-      ``Proved'' indicates a proof in the current paper under [H1] and [H2].}
-      \label{tab:status}
-    \end{table}
+  \begin{table}[ht]
+    \centering
+    \begin{tabular}{p{0.23\textwidth}p{0.62\textwidth}}
+      \hline
+      Claim & Status after this audit \\
+      \hline
+      Proxy bound & Theorem~\ref{thm:proximity}, conditional on a supplied
+        relative profile estimate and a generator-to-character map. \\
+      Window target & Lemma~\ref{lem:Aq}, conditional on using the same
+        bounded five-block endpoint and a supplied profile. \\
+      Q5a weights & The proxy-to-response identification is open;
+        [H-$w'$] and the stronger common [H-w] remain open. \\
+      Born--Infeld value & No coefficient is identified from the present
+        bound or the finite O25 fits. \\
+      \hline
+    \end{tabular}
+    \caption{The proxy statements do not close a Q5a weight hypothesis.}
+    \label{tab:status}
+  \end{table}
 
-  \subsection{Separability of the remaining open problems}
+  \subsection{Dependence of later papers}
 
-  [H1], [H-E1], and [C] are now logically independent of [H-w]:
-    \begin{itemize}
-      \item [H1] concerns the embeddings $\iota_q$; the sinc construction
-      of Q5a Remark~3.2 is the natural starting point.
-      \item [H-E1] is a spectral gap statement for the admissible random walk;
-      the Q5a-O2 Fourier analysis~\cite{Beau2026q5ao2} rules it out at the $q^{-1}$
-      scale (the published form is $O(q^{-2})$ on the whole unit sphere, a normalisation-prefactor
-      fact), so any coercivity
-      must occur at another normalisation.
-      \item [C] (Mosco tightness) is superseded: the published admissibility form has
-      zero-form Mosco limit on the canonical Fourier filtration
-      (Q5a-O2~\cite{Beau2026q5ao2}); the reformulated tightness question ([H2]) is open.
-    \end{itemize}
+  H2, Q5a-O2 and the Emergent Geometry Note cite the former W1 proof
+  when classifying [H-w] as established.
+  Those uses must be retyped during their own release steps.
+  Q8, Q10 and Q11 may retain [H-w] as an explicit hypothesis, but may
+  not discharge it by citing W1.
+  No conclusion about the Q10 spatial coefficient or the Q11 temporal
+  coefficient follows from the present proxy calculation.
 
-  \subsection{Connection to the effective Lorentzian geometry programme}
+  \section{Finite O25 Data and Their Scope}
 
-    Together with Q8~\cite{BeauQ8}, Q9~\cite{Beau2026q9}, Q10~\cite{Beau2026q10},
-    and U1~\cite{Beau2026u1}, the present result closes all weight-convergence
-    obstructions in the chain to the effective Lorentzian co-metric.
-    The convergence $a_q(s) \to A$ combined with $A_H \to 2$
-    (Q10~\cite{Beau2026q10}) fixes both spatial and temporal components of
-    the effective metric under Q5a--Q5b hypotheses.
-
-  \section{Numerical Corroboration}
-
-  The O25 pipeline~\cite{Beau2026a29} measures $\delta_{\mathrm{pair}}$ at
-  $q \in \{29, 61, 101, 151, 211\}$:
+  The five-prime O25 campaign~\cite{Beau2026a29} reports the following
+  means over conjugate pairs, with inter-pair standard deviations:
   \begin{center}
     \begin{tabular}{ccc}
       \hline
-      $q$ & $\delta_{\mathrm{pair}}$ (mean/pairs) & $\pm$ (inter-pair s.d.) \\
+      $q$ & fitted $\delta_{\mathrm{pair}}$ mean & inter-pair s.d. \\
       \hline
       29  & 8.893 & 0.539 \\
       61  & 9.983 & 0.259 \\
@@ -434,18 +400,35 @@ Proof of Hypothesis~\textup{[H-w]} from Spectral Universality}
       \hline
     \end{tabular}
   \end{center}
-  All values satisfy $\delta_{\mathrm{pair}} > 2$, confirming the summability
-  condition of Lemma~\ref{lem:Aq} with large margin.
-  The monotone decrease of the inter-pair standard deviation
-  ($0.539 \to 0.259 \to 0.161 \to 0.139 \to 0.109$) confirms the uniform
-  bound of Theorem~\ref{thm:proximity}: the inter-pair spread is the empirical
-  proxy for $\sup_s a_q(s) - \inf_s a_q(s) = O(q^{-1/2})$,
-  as predicted by O24~\cite{Beau2026a28} and documented in O25~\cite{Beau2026a29}.
-  The five-prime dataset now spans $q \in \{29, 61, 101, 151, 211\}$; the empirical
-  scaling of the inter-pair variance is consistent with the analytical rate $q^{-1/2}$
-  of Theorem~\ref{thm:proximity}, though the residual between the analytical bound
-  and the empirical exponent $q^{-0.44}$ (U1 Remark~7.2) remains an open
-  quantitative question.
+  O25 extends the campaign to $q=307,401,601$ with fewer block samples
+  per pair and reports a raw global exponent of 7.61 at $q=601$.
+  The historical 7.44 value is an O16 single-pair estimate, not a
+  profile bound or the determined O25 asymptote.
+  These measurements show finite-$q$ pair concentration under their
+  sampling protocol.
+  They do not estimate $\sup_s|a_q(s)-b_q(s)|$, establish a relative
+  $q^{-1/2}$ profile rate, or prove that a nonnegative infinite profile
+  is summable.
+
+  \section{Conclusion}
+
+  Version 1's proof of a common positive admissibility weight is
+  withdrawn.
+  The summation step remains exact when its relative profile premise
+  and proxy definition are explicitly supplied.
+  With the published five-block calibration, the natural partial-sum
+  target is a finite-depth quantity rather than the former infinite
+  series, but even that observation concerns a proxy, not Q5a's
+  fingerprint-response averages.
+
+  \paragraph{Interpretive outlook.}
+  A common kinetic coefficient would express a measurable agreement of
+  the two generator directions.
+  The current evidence does not select it.
+  The productive next test is to construct the response weights from
+  the block-sampled rank data and check their directional limits on the
+  actual calibrated window, keeping any Born--Infeld normalisation as
+  a separately tested identification.
 
   \section*{Acknowledgements}
 
