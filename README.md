@@ -1,6 +1,6 @@
 # W1 — What Weight Stabilisation Would Require
 
-This repository contains the candidate version 2.0 of *What Weight Stabilisation
+This repository contains version 2.0 of *What Weight Stabilisation
 Would Require: A Finite-Window Audit of Admissibility Weights*.
 
 Version 1 claimed to prove a common positive limit for the Q5a generator weights.
@@ -26,9 +26,8 @@ different finite-prime fits, extending to a raw global value of 7.61 at q = 601,
 and does not determine an asymptotic exponent. Those fits do not establish
 summability of a limiting profile or a Born–Infeld value for a Q5a coefficient.
 
-This is a **candidate**, not a deposited version. The current published W1
-record at [concept DOI 10.5281/zenodo.19886319](https://doi.org/10.5281/zenodo.19886319)
-still describes version 1.2.
+Version 2.0 is deposited at [Zenodo record 22925850](https://zenodo.org/record/22925850)
+under the unchanged [concept DOI 10.5281/zenodo.19886319](https://doi.org/10.5281/zenodo.19886319).
 
 ## Repository contents
 
